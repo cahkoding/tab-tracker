@@ -1,48 +1,43 @@
 <template>
   <v-layout align-center justify-center row fill-height>
     <v-flex xs12 sm6 md3>
-      <div class="white elevation-2">
-        <v-toolbar flat dense class="red" dark>
-          <v-toolbar-title>Register</v-toolbar-title>
-        </v-toolbar>
-
-        <div class="pl-4 pr-4 pt-2 pb-2">
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
-            autocomplete="off"
-          >
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            placeholder="email"
-          ></v-text-field>
-          <!-- <br> -->
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            type="password"
-            autocomplete = "new-password"
-            placeholder="password"
-          ></v-text-field>
-          <!-- <br> -->
-          <div class="message" v-html="message"></div>
-          <br>
-          <v-btn
-            class="red"
-            @click="validate">
-            Register
-          </v-btn>
-          </v-form>
-        </div>
-      </div>
+      <panel title="Registration">
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+          autocomplete="off"
+        >
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          placeholder="email"
+        ></v-text-field>
+        <!-- <br> -->
+        <v-text-field
+          v-model="password"
+          :rules="passwordRules"
+          type="password"
+          autocomplete = "new-password"
+          placeholder="password"
+        ></v-text-field>
+        <!-- <br> -->
+        <div class="message" v-html="message"></div>
+        <br>
+        <v-btn
+          class="red"
+          @click="validate">
+          Register
+        </v-btn>
+        </v-form>
+      </panel>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import Panel from '@/components/Panel'
 export default {
   name: 'HelloWorld',
   data () {
@@ -82,6 +77,9 @@ export default {
         this.message = err.response.data.error
       }
     }
+  },
+  components: {
+    Panel
   }
 }
 </script>

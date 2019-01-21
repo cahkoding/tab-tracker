@@ -1,45 +1,40 @@
 <template>
   <v-layout align-center justify-center row fill-height>
     <v-flex xs12 sm6 md3>
-      <div class="white elevation-2">
-        <v-toolbar flat dense class="red" dark>
-          <v-toolbar-title>Login</v-toolbar-title>
-        </v-toolbar>
-
-        <div class="pl-4 pr-4 pt-2 pb-2">
+      <panel title="Login">
           <v-form
             ref="form"
             lazy-validation
             autocomplete="on"
           >
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            placeholder="email"
-          ></v-text-field>
-          <!-- <br> -->
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            type="password"
-            placeholder="password"
-          ></v-text-field>
-          <!-- <br> -->
-          <div class="message" v-html="message"></div>
-          <br>
-          <v-btn
-            class="red"
-            @click="validate">
-            Login
-          </v-btn>
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              placeholder="email"
+            ></v-text-field>
+            <!-- <br> -->
+            <v-text-field
+              v-model="password"
+              :rules="passwordRules"
+              type="password"
+              placeholder="password"
+            ></v-text-field>
+            <!-- <br> -->
+            <div class="message" v-html="message"></div>
+            <br>
+            <v-btn
+              class="red"
+              @click="validate">
+              Login
+            </v-btn>
           </v-form>
-        </div>
-      </div>
+      </panel>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import Panel from '@/components/Panel'
 import AuthenticationService from '@/services/AuthenticationService'
 export default {
   name: 'HelloWorld',
@@ -80,6 +75,9 @@ export default {
         this.message = err.response.data.error
       }
     }
+  },
+  components: {
+    Panel
   }
 }
 </script>
