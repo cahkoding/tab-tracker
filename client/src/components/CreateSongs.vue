@@ -1,48 +1,61 @@
 <template>
-  <v-layout align-center justify-center row fill-height>
-    <v-flex xs12 sm6 md5>
-      <panel title="Create Songs">
-        <v-form
-          ref="form"
-        >
+  <v-layout>
+    <v-flex xs12 sm4 md4>
+      <panel title="Song Metadata">
         <v-text-field
-          v-model="title"
+          v-model="song.title"
           placeholder="title"
+          :rules="[required]"
         ></v-text-field>
         <!-- <br> -->
         <v-text-field
-          v-model="artist"
+          v-model="song.artist"
           placeholder="artist"
+          :rules="[required]"
         ></v-text-field>
         <!-- <br> -->
         <v-text-field
-          v-model="genre"
+          v-model="song.genre"
           placeholder="genre"
+          :rules="[required]"
         ></v-text-field>
         <!-- <br> -->
         <v-text-field
-          v-model="album"
+          v-model="song.album"
           placeholder="album"
+          :rules="[required]"
         ></v-text-field>
         <!-- <br> -->
         <v-text-field
-          v-model="albumImageUrl"
+          v-model="song.albumImageUrl"
           placeholder="image url"
+          :rules="[required]"
         ></v-text-field>
         <!-- <br> -->
         <v-text-field
-          v-model="youtubeId"
+          v-model="song.youtubeId"
           placeholder="youtubeId"
+          :rules="[required]"
         ></v-text-field>
+        <div class="message" v-html="message"></div>
+      </panel>
+    </v-flex>
+
+     <v-flex xs12 sm8 md8>
+      <panel title="Song Structure" class="ml-4">
         <!-- <br> -->
         <v-text-field
-          v-model="lyrics"
+          v-model="song.lyrics"
           placeholder="lyrics"
+          :rules="[required]"
+          multi-line
         ></v-text-field>
         <!-- <br> -->
         <v-text-field
-          v-model="tab"
+          v-model="song.tab"
           placeholder="tab"
+          :rules="[required]"
+          multi-line
         ></v-text-field>
         <!-- <br> -->
 
@@ -53,7 +66,6 @@
           @click="createSongs">
           Store
         </v-btn>
-        </v-form>
       </panel>
     </v-flex>
   </v-layout>
@@ -66,32 +78,38 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      title: '',
-      artist: '',
-      genre: '',
-      album: '',
-      albumImageUrl: '',
-      youtubeId: '',
-      lyrics: '',
-      tab: '',
+      song: {
+        title: null,
+        artist: null,
+        genre: null,
+        album: null,
+        albumImageUrl: null,
+        youtubeId: null,
+        lyrics: null,
+        tab: null
+      },
       message: null,
-      alert: true
+      alert: true,
+      required: (value) => !!value || 'Required.'
     }
   },
   methods: {
     async createSongs () {
+      const areAllFieldsAllFilledIn = Object
+        .keys(this.song)
+        .every(key => !!this.song[key])
+
+      if (!areAllFieldsAllFilledIn) {
+        this.message = 'Please fill in all the required fields'
+        return
+      }
+
       try {
-        const response = await SongService.store({
-          title: this.title,
-          artist: this.artist,
-          genre: this.genre,
-          album: this.album,
-          albumImageUrl: this.albumImageUrl,
-          youtubeId: this.youtubeId,
-          lyrics: this.lyrics,
-          tab: this.tab
-        })
+        const response = await SongService.store(this.song)
         this.message = 'Succesfully Stored'
+        this.$router.push({
+          name: 'songs'
+        })
         console.log(response.data)
       } catch (err) {
         this.message = err.response.data.error

@@ -1,22 +1,7 @@
 <template>
-  <v-layout align-center justify-center row fill-height>
-    <v-flex xs12 sm8 md6>
-      <panel title="Songs">
-        <v-btn
-          @click="navigateTo({name: 'createsongs'})"
-          slot="action"
-          class="red accent-2"
-          dark
-          small
-          absolute
-          right
-          fab>
-          <v-icon>add</v-icon>
-        </v-btn>
-
-        <div v-for="song in songs"
-          class="song"
-          :key="song.title">
+    <v-layout align-center justify-center row fill-height>
+      <v-flex xs12 sm8 md6>
+        <panel title="Songs">
           <v-layout>
             <v-flex md6>
               <div class="song-title">
@@ -28,29 +13,15 @@
               <div class="song-genre">
                 {{song.genre}}
               </div>
-
-              <v-btn
-                @click="navigateTo({
-                  name: 'song',
-                  params: {
-                    songId: song.id
-                  }
-                })"
-                class="red accent-2"
-                small
-                dark>
-                View
-              </v-btn>
             </v-flex>
 
             <v-flex class="md6">
               <img class="album-image" :src="song.albumImageUrl" />
             </v-flex>
           </v-layout>
-        </div>
-      </panel>
-    </v-flex>
-  </v-layout>
+        </panel>
+      </v-flex>
+    </v-layout>
 </template>
 
 <script>
@@ -62,7 +33,7 @@ export default {
   },
   data () {
     return {
-      songs: null
+      song: {}
     }
   },
   methods: {
@@ -71,7 +42,9 @@ export default {
     }
   },
   async mounted () {
-    this.songs = (await SongService.index()).data
+    const songId = this.$store.state.route.params.songId
+    this.song = (await SongService.show(songId)).data
+    console.log(this.song)
   }
 }
 </script>
