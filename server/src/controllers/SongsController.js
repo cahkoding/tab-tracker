@@ -25,14 +25,29 @@ module.exports = {
       })
     }
   },
-  async view (req, res) {
+  async show (req, res) {
     try {
-      const songs = await Song.findById(req.params.id)
-      res.send(songs)
+      const song = await Song.findById(req.params.songId)
+      res.send(song)
     } catch (err) {
       console.log(err)
       res.status(500).send({
         error: 'error while fething data songs APIs'
+      })
+    }
+  },
+  async put (req, res) {
+    try {
+      const song = await Song.update(req.body, {
+        where: {
+          id: req.params.songId
+        }
+      })
+      res.send(song)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send({
+        error: 'error occured server while trying update'
       })
     }
   }

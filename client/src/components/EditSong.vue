@@ -63,8 +63,8 @@
         <br>
         <v-btn
           class="red"
-          @click="createSongs">
-          Store
+          @click="save">
+          Save
         </v-btn>
       </panel>
     </v-flex>
@@ -89,11 +89,12 @@ export default {
       },
       message: null,
       alert: true,
+      songId: null,
       required: (value) => !!value || 'Required.'
     }
   },
   methods: {
-    async createSongs () {
+    async save () {
       const areAllFieldsAllFilledIn = Object
         .keys(this.song)
         .every(key => !!this.song[key])
@@ -104,16 +105,24 @@ export default {
       }
 
       try {
-        const response = await SongService.store(this.song)
-        this.message = 'Succesfully Stored'
+        const response = await SongService.put(this.song, this.songId)
+        this.message = 'Succesfully Updated'
         this.$router.push({
-          name: 'songs'
+          name: 'song',
+          params: {
+            songId: this.songId
+          }
         })
         console.log(response.data)
       } catch (err) {
         this.message = err.response.data.error
       }
     }
+  },
+  async mounted () {
+    this.songId = this.$store.state.route.params.songId
+    this.song = (await SongService.show(this.songId)).data
+    console.log(this.song)
   }
 }
 </script>

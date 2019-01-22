@@ -7,7 +7,10 @@ export default {
   store (request) {
     return Api().post('songs', request)
   },
-  show (id) {
-    return Api().get('song/' + id)
+  show (songId) {
+    return Api().get(`song/${songId}`)
+  },
+  put (request, songId) {
+    return Api().put(`song/${songId}`, request)
   }
 }

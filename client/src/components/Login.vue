@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import Panel from '@/components/Panel'
 import AuthenticationService from '@/services/AuthenticationService'
 export default {
   name: 'HelloWorld',
@@ -75,9 +74,6 @@ export default {
         this.message = err.response.data.error
       }
     }
-  },
-  components: {
-    Panel
   }
 }
 </script>
