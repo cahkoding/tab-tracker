@@ -13,7 +13,14 @@
         </div>
 
         <v-btn
-          @click="navigateTo({name: 'song-edit'})"
+          :to="{
+            name: 'song-edit',
+            params () {
+              return {
+                songId: song.id
+              }
+            }
+          }"
           class="red accent-2"
           small
           dark>
@@ -34,12 +41,7 @@
 export default {
   props: [
     'song'
-  ],
-  methods: {
-    navigateTo (route) {
-      this.$router.push(route)
-    }
-  }
+  ]
 }
 </script>
 

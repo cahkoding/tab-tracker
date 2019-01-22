@@ -44,19 +44,19 @@
      <v-flex xs12 sm8 md8>
       <panel title="Song Structure" class="ml-4">
         <!-- <br> -->
-        <v-text-field
+        <v-textarea
           v-model="song.lyrics"
           placeholder="lyrics"
           :rules="[required]"
           multi-line
-        ></v-text-field>
+        ></v-textarea>
         <!-- <br> -->
-        <v-text-field
+        <v-textarea
           v-model="song.tab"
           placeholder="tab"
           :rules="[required]"
           multi-line
-        ></v-text-field>
+        ></v-textarea>
         <!-- <br> -->
 
         <div class="message" v-html="message"></div>
@@ -105,7 +105,8 @@ export default {
       }
 
       try {
-        const response = await SongService.put(this.song, this.songId)
+        // const response =
+        await SongService.put(this.song, this.songId)
         this.message = 'Succesfully Updated'
         this.$router.push({
           name: 'song',
@@ -113,7 +114,6 @@ export default {
             songId: this.songId
           }
         })
-        console.log(response.data)
       } catch (err) {
         this.message = err.response.data.error
       }
@@ -122,7 +122,6 @@ export default {
   async mounted () {
     this.songId = this.$store.state.route.params.songId
     this.song = (await SongService.show(this.songId)).data
-    console.log(this.song)
   }
 }
 </script>

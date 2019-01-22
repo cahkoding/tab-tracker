@@ -44,19 +44,19 @@
      <v-flex xs12 sm8 md8>
       <panel title="Song Structure" class="ml-4">
         <!-- <br> -->
-        <v-text-field
+        <v-textarea
           v-model="song.lyrics"
           placeholder="lyrics"
           :rules="[required]"
           multi-line
-        ></v-text-field>
+        ></v-textarea>
         <!-- <br> -->
-        <v-text-field
+        <v-textarea
           v-model="song.tab"
           placeholder="tab"
           :rules="[required]"
           multi-line
-        ></v-text-field>
+        ></v-textarea>
         <!-- <br> -->
 
         <div class="message" v-html="message"></div>
@@ -104,12 +104,13 @@ export default {
       }
 
       try {
-        const response = await SongService.store(this.song)
+        // const response =
+        await SongService.store(this.song)
         this.message = 'Succesfully Stored'
         this.$router.push({
           name: 'songs'
         })
-        console.log(response.data)
+        // console.log(response.data)
       } catch (err) {
         this.message = err.response.data.error
       }

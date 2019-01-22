@@ -71,7 +71,10 @@ export default {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
         this.message = 'Succesfully Registered'
-        console.log(response.data)
+        this.$router.push({
+          name: 'songs'
+        })
+        // console.log(response.data)
       } catch (err) {
         this.message = err.response.data.error
       }

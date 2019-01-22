@@ -20,7 +20,7 @@
               placeholder="password"
             ></v-text-field>
             <!-- <br> -->
-            <div class="message" v-html="message"></div>
+            <div class="message" v-html="message" />
             <br>
             <v-btn
               class="red"
@@ -69,6 +69,9 @@ export default {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
         this.message = 'Login Succesfully'
+        this.$router.push({
+          name: 'songs'
+        })
         // console.log(response.data)
       } catch (err) {
         this.message = err.response.data.error
@@ -80,6 +83,6 @@ export default {
 
 <style scoped>
 .message {
-  color: green;
+  color: red;
 }
 </style>

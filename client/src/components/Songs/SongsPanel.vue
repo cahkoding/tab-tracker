@@ -1,7 +1,7 @@
 <template>
   <panel title="Songs">
     <v-btn
-      @click="navigateTo({name: 'createsongs'})"
+      :to="{name: 'createsongs'}"
       slot="action"
       class="red accent-2"
       dark
@@ -28,12 +28,12 @@
           </div>
 
           <v-btn
-            @click="navigateTo({
+            :to="{
               name: 'song',
               params: {
                 songId: song.id
               }
-            })"
+            }"
             class="red accent-2"
             small
             dark>
@@ -57,13 +57,13 @@ export default {
       songs: null
     }
   },
-  methods: {
-    navigateTo (route) {
-      this.$router.push(route)
+  watch: {
+    '$route.query.search': {
+      immediate: true,
+      async handler (value) {
+        this.songs = (await SongService.index(value)).data
+      }
     }
-  },
-  async mounted () {
-    this.songs = (await SongService.index()).data
   }
 }
 </script>
