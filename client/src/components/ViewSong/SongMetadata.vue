@@ -1,7 +1,7 @@
 <template>
   <panel title="Song Metadata">
     <v-layout>
-      <v-flex md6>
+      <v-flex md8>
         <div class="song-title">
           {{song.title}}
         </div>
@@ -26,9 +26,27 @@
           dark>
           Edit
         </v-btn>
+
+        <v-btn
+          v-if="isUserLoggedIn && !bookmark"
+          @click="setAsBookmark"
+          class="red accent-2"
+          small
+          dark>
+          Set As Bookmark
+        </v-btn>
+
+        <v-btn
+          v-if="isUserLoggedIn && bookmark"
+          @click="unsetAsBookmark"
+          class="red accent-2"
+          small
+          dark>
+          Unset As Bookmark
+        </v-btn>
       </v-flex>
 
-      <v-flex class="md6">
+      <v-flex class="md4">
         <img class="album-image" :src="song.albumImageUrl" />
         <br>
         {{song.album}}
@@ -38,10 +56,57 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+import BookmarksService from '@/services/BookmarksService'
 export default {
+  data () {
+    return {
+      bookmark: null,
+      bookmarkId: null
+    }
+  },
   props: [
     'song'
-  ]
+  ],
+  computed: {
+    ...mapState([
+      'isUserLoggedIn'
+    ])
+  },
+  methods: {
+    async setAsBookmark () {
+      try {
+        this.bookmark = ((await BookmarksService.store({
+          SongId: this.$route.params.songId,
+          UserId: this.$store.state.user.id
+        })).data).data
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async unsetAsBookmark () {
+      try {
+        this.bookmark =
+          ((await BookmarksService.destroy(this.bookmark.id)).data).data
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  },
+  watch: {
+    async song () {
+      try {
+        if (this.$store.state.isUserLoggedIn) {
+          this.bookmark = ((await BookmarksService.index({
+            songId: this.song.id,
+            userId: this.$store.state.user.id
+          })).data).data
+        }
+      } catch (err) {
+        console.log('err')
+      }
+    }
+  }
 }
 </script>
 
@@ -64,9 +129,9 @@ export default {
 }
 
 .album-image {
-  width: 50%;
+  width: 80%;
   margin: 0 auto;
-  border-radius: 70px;
+  border-radius: 80px;
 }
 
 .song-tab {
