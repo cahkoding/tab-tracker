@@ -61,8 +61,8 @@ import BookmarksService from '@/services/BookmarksService'
 export default {
   data () {
     return {
-      bookmark: null,
-      bookmarkId: null
+      bookmark: null
+      // bookmarkId: null
     }
   },
   props: [
@@ -70,7 +70,8 @@ export default {
   ],
   computed: {
     ...mapState([
-      'isUserLoggedIn'
+      'isUserLoggedIn',
+      'user'
     ])
   },
   methods: {
@@ -80,6 +81,7 @@ export default {
           SongId: this.$route.params.songId,
           UserId: this.$store.state.user.id
         })).data).data
+        // this.bookmarkId = this.bookmark.id
       } catch (err) {
         console.log(err)
       }
@@ -88,6 +90,7 @@ export default {
       try {
         this.bookmark =
           ((await BookmarksService.destroy(this.bookmark.id)).data).data
+          // ((await BookmarksService.destroy(this.bookmarkId)).data).data
       } catch (err) {
         console.log(err)
       }
@@ -97,13 +100,17 @@ export default {
     async song () {
       try {
         if (this.$store.state.isUserLoggedIn) {
-          this.bookmark = ((await BookmarksService.index({
+          const bookmark = (await BookmarksService.index({
             songId: this.song.id,
-            userId: this.$store.state.user.id
-          })).data).data
+            userId: this.user.id
+          })).data
+          if (bookmark.length) {
+            this.bookmark = bookmark[0]
+            // this.bookmarkId = this.bookmark.bookmarkId
+          }
         }
       } catch (err) {
-        console.log('err')
+        console.log(err)
       }
     }
   }

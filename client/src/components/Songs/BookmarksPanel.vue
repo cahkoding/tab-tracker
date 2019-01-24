@@ -6,10 +6,10 @@
       :items="bookmarks">
       <template slot="items" slot-scope="props">
         <td class="text-xs-left">
-          {{props.item.Song.title}}
+          {{props.item.title}}
         </td>
         <td class="text-xs-left">
-          {{props.item.Song.artist}}
+          {{props.item.artist}}
         </td>
       </template>
     </v-data-table>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import BookmarksService from '@/services/BookmarksService'
 export default {
   data () {
@@ -38,10 +39,18 @@ export default {
       bookmarks: []
     }
   },
+  computed: {
+    ...mapState([
+      'user'
+    ])
+  },
   async mounted () {
     try {
-      const userId = this.$store.state.user.id
-      const response = await BookmarksService.bookmarkedSongs(userId)
+      const userId = this.user.id
+      // const response = await BookmarksService.bookmarkedSongs(userId)
+      const response = await BookmarksService.index({
+        userId: userId
+      })
       this.bookmarks = response.data
     } catch (err) {
       console.log(err)

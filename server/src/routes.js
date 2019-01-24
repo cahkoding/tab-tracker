@@ -33,6 +33,7 @@ module.exports = (app) => {
   app.delete('/bookmarks/:bookmarkId',
     BookmarksController.destroy)
 
+  // gajadi dipake
   app.get('/bookmarks/song',
     BookmarksController.bookmarkedSongs)
 }
