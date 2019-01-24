@@ -32,4 +32,7 @@ module.exports = (app) => {
 
   app.delete('/bookmarks/:bookmarkId',
     BookmarksController.destroy)
+
+  app.get('/bookmarks/song',
+    BookmarksController.bookmarkedSongs)
 }

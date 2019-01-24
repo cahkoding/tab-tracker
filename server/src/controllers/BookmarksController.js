@@ -1,4 +1,4 @@
-const { Bookmark } = require('../models')
+const { Bookmark, Song } = require('../models')
 
 module.exports = {
   async index (req, res) {
@@ -11,7 +11,7 @@ module.exports = {
         }
       })
       res.send({
-        data: bookmarks || null
+        data: bookmarks
       })
     } catch (err) {
       res.status(500).send({
@@ -58,6 +58,28 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: 'error while trying delete Api'
+      })
+    }
+  },
+
+  async bookmarkedSongs (req, res) {
+    try {
+      const { userId } = req.query
+      const bookmarkedSongs = await Bookmark.findAll({
+        attributes: [
+          'Song.id'
+        ],
+        where: {
+          UserId: userId
+        },
+        include: [{
+          model: Song
+        }]
+      })
+      res.send(bookmarkedSongs)
+    } catch (err) {
+      res.status(500).send({
+        error: 'erro while trying hit bookmarkedsongApi!'
       })
     }
   }

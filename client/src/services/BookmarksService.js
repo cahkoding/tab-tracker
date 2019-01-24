@@ -16,5 +16,13 @@ export default {
 
   destroy (bookmarksId) {
     return Api().delete(`/bookmarks/${bookmarksId}`)
+  },
+
+  bookmarkedSongs (userId) {
+    return Api().get('/bookmarks/song', {
+      params: {
+        userId: userId
+      }
+    })
   }
 }
