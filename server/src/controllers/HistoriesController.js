@@ -22,7 +22,7 @@ module.exports = {
           history
         ))
 
-      res.send(histories)
+      res.send(_.uniqBy(histories, history => history.SongId))
     } catch (err) {
       res.status(500).send({
         error: err
