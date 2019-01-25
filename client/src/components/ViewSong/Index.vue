@@ -29,6 +29,8 @@ import Lyrics from './Lyrics'
 import Youtube from './Youtube'
 import SongService from '@/services/SongsService'
 import SongMetaData from '@/components/ViewSong/SongMetadata'
+import HistoriesService from '@/services/HistoriesService'
+
 export default {
   components: {
     SongMetaData,
@@ -44,6 +46,10 @@ export default {
   async mounted () {
     const songId = this.$store.state.route.params.songId
     this.song = (await SongService.show(songId)).data
+    await HistoriesService.store({
+      UserId: this.$store.state.user.id,
+      SongId: songId
+    })
   }
 }
 </script>

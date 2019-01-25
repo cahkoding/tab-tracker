@@ -1,4 +1,5 @@
 const AuthenticationController = require('./controllers/AuthenticationController')
+const HistoriesController = require('./controllers/HistoriesController')
 const BookmarksController = require('./controllers/BookmarksController')
 const SongsController = require('./controllers/SongsController')
 
@@ -36,4 +37,10 @@ module.exports = (app) => {
   // gajadi dipake
   app.get('/bookmarks/song',
     BookmarksController.bookmarkedSongs)
+
+  app.get('/recentlyViewedSongs',
+    HistoriesController.index)
+
+  app.post('/recentlyViewedSongs',
+    HistoriesController.store)
 }
